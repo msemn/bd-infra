@@ -74,11 +74,6 @@ services:
     networks:
       net_pet:
         ipv4_address: 172.27.1.9
-  
-  # presto-coordinator:
-  #   image: shawnzhu/prestodb:0.181
-  #   ports:
-  #     - "8080:8080"
     
   spark-master:
     image: bde2020/spark-master:2.4.0-hadoop2.7
@@ -88,8 +83,6 @@ services:
       - 7077:7077
     environment:
       - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
-    depends_on:
-      - namenode
     env_file:
       - ./hadoop-hive.env
     networks:
@@ -138,17 +131,9 @@ services:
     networks:
       net_pet:
         ipv4_address: 172.27.1.12
-    
-  # spark-notebook:
-  #   image: bde2020/spark-notebook:2.1.0-hadoop2.8-hive
-  #   container_name: spark-notebook
-  #   env_file:
-  #     - ./hadoop-hive.env
-  #   ports:
-  #     - 9001:9001
-      
+
   hue:
-      image: gethue/hue:latest
+      image: gethue/hue:20191107-135001
       hostname: hue
       container_name: hue
       dns: 8.8.8.8
@@ -177,8 +162,6 @@ services:
           MYSQL_DATABASE: hue
           MYSQL_USER: root
           MYSQL_PASSWORD: secret
-      depends_on:
-          - hive-server
       networks:
         net_pet:
           ipv4_address: 172.27.1.14
